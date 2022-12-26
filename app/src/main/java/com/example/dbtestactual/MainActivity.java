@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -40,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
                     .setReorderingAllowed(true)
                     .add(R.id.fragment_container, MusicFragment.class, null)
                     .commit();
-
         }
+
 
         instance = MusicDatabase.Instance.DB_INSTANCE.getDatabase(getApplicationContext());
 
@@ -60,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         remove = menu.findItem(R.id.remove_item);
         search = menu.findItem(R.id.search_item);
         CheckBox filter = findViewById(R.id.filter);
+        Toast universalToast = new Toast(getApplicationContext());
+        universalToast.setDuration(Toast.LENGTH_SHORT);
         AtomicBoolean filtered = new AtomicBoolean(false);
 
 
@@ -79,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
             builder.setView(view);
             builder.setTitle("Add a new Track");
-            builder.setMessage("Add the Title and Artist of the Track you would like to add");
+            builder.setMessage("Add the title and artist of the track you would like to add");
             builder.setPositiveButton("add track", (dialogInterface, i) -> MusicDatabase.service.execute(() -> {
 
                 instance.getDao().insert(new Track(titleField.getText().toString(), artistField.getText().toString()));
@@ -100,16 +104,25 @@ public class MainActivity extends AppCompatActivity {
             EditText searchValue = view.findViewById(R.id.search_value);
 
             View.OnClickListener checkBoxListener = c -> {
-                switch (c.getId()) {
-                    case R.id.title_search:
-                        artist.setChecked(false);
+                CheckBox checkBox = (CheckBox) c;
 
-                        break;
-                    case R.id.artist_search:
-                        title.setChecked(false);
-                        break;
+                if (checkBox.isChecked())
+                    switch (c.getId()) {
+                        case R.id.title_search:
+                            artist.setChecked(false);
+                            searchValue.setHint("title");
 
-                }
+                            break;
+                        case R.id.artist_search:
+                            title.setChecked(false);
+                            searchValue.setHint("artist");
+
+                            break;
+                        default:
+
+                            break;
+                    }
+                else searchValue.setHint("");
             };
 
             title.setOnClickListener(checkBoxListener);
@@ -117,12 +130,11 @@ public class MainActivity extends AppCompatActivity {
 
             builder.setView(view);
             builder.setTitle("Search for a Track");
-            builder.setMessage("Please select the specifics of your search");
+            builder.setMessage("Please specify your search");
             builder.setPositiveButton("set filter", (i, c) -> {
                 String text = searchValue.getText().toString();
-                System.out.println(text);
-                if (artist.isChecked()) {
 
+                if (artist.isChecked()) {
 
                     filter.setOnCheckedChangeListener((compoundButton, checked) -> {
                         if (checked)
@@ -140,9 +152,9 @@ public class MainActivity extends AppCompatActivity {
                             });
 
                     });
+                    filter.setChecked(false);
                     filter.setChecked(true);
                 } else if (title.isChecked()) {
-
 
                     filter.setOnCheckedChangeListener((compoundButton, checked) -> {
                         if (checked)
@@ -160,7 +172,12 @@ public class MainActivity extends AppCompatActivity {
                             });
 
                     });
+                    filter.setChecked(false);
                     filter.setChecked(true);
+                } else {
+
+                    universalToast.setText("please select a title or artist to filter");
+                    universalToast.show();
                 }
 
             });
@@ -169,10 +186,19 @@ public class MainActivity extends AppCompatActivity {
         });
 
         remove.setOnMenuItemClickListener(e -> {
-            MusicDatabase.service.execute(() -> {
-                if (musicAdapter.getHighlighted() != null)
-                    instance.getDao().delete(musicAdapter.getHighlighted().getTrack());
-            });
+            if (musicAdapter.getHighlighted() != null)
+
+                MusicDatabase.service.execute(() ->
+                        instance.getDao().delete(musicAdapter.getHighlighted().getTrack()));
+            else {
+
+                universalToast.setText("no track highlighted (press track to highlight)");
+
+                universalToast.show();
+
+
+            }
+
             return false;
         });
 

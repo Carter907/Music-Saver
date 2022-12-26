@@ -39,8 +39,8 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
 
         holder.track = trackList.get(position);
 
-        title.setText("title:\t" + trackList.get(position).getTitle());
-        artist.setText("artist:\t" + trackList.get(position).getArtist());
+        title.setText(trackList.get(position).getTitle());
+        artist.setText("by " + trackList.get(position).getArtist());
     }
 
 
