@@ -10,7 +10,7 @@
     <TextView
         android:id="@+id/title"
         android:background="@drawable/title_background"
-        android:textSize="30dp"
+        android:textSize="16dp"
         android:padding="10dp"
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="10dp"
@@ -23,7 +23,7 @@
         android:id="@+id/artist"
         android:background="@drawable/artist_background"
         android:padding="10dp"
-        android:textSize="25dp"
+        android:textSize="14dp"
         android:layout_margin="10dp"
         android:textColor="@android:color/white"
         android:layout_width="match_parent"
