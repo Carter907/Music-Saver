@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities ={Track.class}, version=1, exportSchema = false)
+@Database(entities = {Track.class}, version = 1, exportSchema = false)
 public abstract class MusicDatabase extends RoomDatabase {
 
     public abstract MusicDao getDao();
@@ -41,9 +41,6 @@ public abstract class MusicDatabase extends RoomDatabase {
 
         }
     };
-
-
-
 
 
 }

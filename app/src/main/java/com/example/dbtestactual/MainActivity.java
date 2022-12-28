@@ -38,10 +38,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             manager = getSupportFragmentManager();
 
-            manager.beginTransaction()
-                    .setReorderingAllowed(true)
-                    .add(R.id.fragment_container, MusicFragment.class, null)
-                    .commit();
+            manager.beginTransaction().setReorderingAllowed(true).add(R.id.fragment_container, MusicFragment.class, null).commit();
         }
 
 
@@ -106,22 +103,21 @@ public class MainActivity extends AppCompatActivity {
             View.OnClickListener checkBoxListener = c -> {
                 CheckBox checkBox = (CheckBox) c;
 
-                if (checkBox.isChecked())
-                    switch (c.getId()) {
-                        case R.id.title_search:
-                            artist.setChecked(false);
-                            searchValue.setHint("title");
+                if (checkBox.isChecked()) switch (c.getId()) {
+                    case R.id.title_search:
+                        artist.setChecked(false);
+                        searchValue.setHint("title");
 
-                            break;
-                        case R.id.artist_search:
-                            title.setChecked(false);
-                            searchValue.setHint("artist");
+                        break;
+                    case R.id.artist_search:
+                        title.setChecked(false);
+                        searchValue.setHint("artist");
 
-                            break;
-                        default:
+                        break;
+                    default:
 
-                            break;
-                    }
+                        break;
+                }
                 else searchValue.setHint("");
             };
 
@@ -144,12 +140,11 @@ public class MainActivity extends AppCompatActivity {
                                 musicAdapter.notifyDataSetChanged();
 
                             });
-                        else
-                            instance.getDao().getAllTracksSorted().observe(this, tracks -> {
-                                musicAdapter.getTrackList().clear();
-                                musicAdapter.getTrackList().addAll(tracks);
-                                musicAdapter.notifyDataSetChanged();
-                            });
+                        else instance.getDao().getAllTracksSorted().observe(this, tracks -> {
+                            musicAdapter.getTrackList().clear();
+                            musicAdapter.getTrackList().addAll(tracks);
+                            musicAdapter.notifyDataSetChanged();
+                        });
 
                     });
                     filter.setChecked(false);
@@ -164,12 +159,11 @@ public class MainActivity extends AppCompatActivity {
                                 musicAdapter.notifyDataSetChanged();
 
                             });
-                        else
-                            instance.getDao().getAllTracksSorted().observe(this, tracks -> {
-                                musicAdapter.getTrackList().clear();
-                                musicAdapter.getTrackList().addAll(tracks);
-                                musicAdapter.notifyDataSetChanged();
-                            });
+                        else instance.getDao().getAllTracksSorted().observe(this, tracks -> {
+                            musicAdapter.getTrackList().clear();
+                            musicAdapter.getTrackList().addAll(tracks);
+                            musicAdapter.notifyDataSetChanged();
+                        });
 
                     });
                     filter.setChecked(false);
@@ -188,8 +182,7 @@ public class MainActivity extends AppCompatActivity {
         remove.setOnMenuItemClickListener(e -> {
             if (musicAdapter.getHighlighted() != null)
 
-                MusicDatabase.service.execute(() ->
-                        instance.getDao().delete(musicAdapter.getHighlighted().getTrack()));
+                MusicDatabase.service.execute(() -> instance.getDao().delete(musicAdapter.getHighlighted().getTrack()));
             else {
 
                 universalToast.setText("no track highlighted (press track to highlight)");

@@ -31,5 +31,4 @@ public interface MusicDao {
     void deleteAllTracks();
 
 
-
 }

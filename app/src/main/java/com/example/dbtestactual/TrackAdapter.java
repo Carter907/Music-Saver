@@ -31,6 +31,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
 
         return holder;
     }
+
     @Override
     public void onBindViewHolder(TrackHolder holder, int position) {
 
@@ -46,6 +47,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
 
     public class TrackHolder extends RecyclerView.ViewHolder {
         private Track track;
+
         public TrackHolder(@NonNull View view) {
             super(view);
             view.setOnClickListener(e -> {
